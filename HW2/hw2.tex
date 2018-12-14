@@ -1,0 +1,310 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsthm,amssymb}
+
+\title{CMPS 101 Homework 2}
+\author{Dominik Schmidt}
+
+\begin{document}
+
+\maketitle
+
+\section*{Question 1}
+Heaps naturally lead to a sorting algorithm, Heapsort. Starting
+from array A, build it into a min-heap. Repeatly called Extract-Min
+to get the elements of A in sorted order. Give pseudocode for Heapsort
+and show that it is not stable.\\
+
+\subsection*{Pseudo Code}
+The Pseudo Code below makes use of an \textbf{extractMin($Array$)} method that \\
+1) Returns and swaps the root element with the last element. \\
+2) Decrements the size of the Heap. \\
+3) Restores the Minimum Heap property.
+
+\begin{algorithm}
+\begin{algorithmic}
+	\STATE{\textbf{buildMinHeap($Array$)}}
+	\FORALL{$i$ in $Array$}
+		\STATE{$Array[i] \gets $ \textbf{extractMin($Array$)}}
+	\ENDFOR
+	\STATE{$ \textbf{return}$ $ Array$}
+\end{algorithmic}
+\caption{Pseudo Code for Heap Sort}
+\end{algorithm}
+
+\subsection*{Heap Sort stability}
+Heap Sort is not a stable sorting algorithm, although it can be 
+implemented to be stable. For the purpose of the question we will show
+that the Heap Sort Implementation in $Introduction$ $to$ $Algorithms,$ $3rd$
+$Edition$ which uses a Max Heap and builds the array from the largest index to 
+the smallest by inserting the largest element in the heap in the largest unsorted
+index in the array is not stable. With the following example we can show that
+Heap Sort is not stable: Consider the  Array ${\{56, 33, 31, 29, 13_1, 13_2, 7, 2, 0\}}$. 
+Note that $13_1$ and $13_2$ both have value 13, the subscript merely
+keeps track of their order. Heap Sort will insert the largest value in the Heap 
+in the largest unsorted the index so our sorted Array will look like this: 
+ ${\{ 0,2,7,13_2,13_1,29,31,33,56\}}$. We can clearly see that $13_1$ and 
+$13_2$ switched order, therefore Heap Sort is not stable.
+
+\section*{Question 2}
+Given an input array A of length n and a positive integer
+k $>$ 0, design an algorithm that outputs the largest k elements in sorted
+order. Provide pseudocode and give a time-complexity analysis. You will
+get full credit if the time-complexity is O(n+k log k).\\
+
+\subsection*{Pseudo Code}
+
+Heap Sort $k$ times
+\begin{algorithm}
+\begin{algorithmic}
+\STATE kLargest($Array, k$)
+\STATE $SortedK$ $\gets$ $new$ $Array[k]$ 
+\STATE \textbf{buildMaxHeap($Array$)}
+	\FOR{$i \gets k-1$, $i$ $>=$ $0$, $i$ - -}
+		\STATE $SortedK[i] \gets$ \textbf{extractMax($Array$)}
+	\ENDFOR
+\STATE \textbf{return} $SortedK$
+\end{algorithmic}
+\caption{Pseudo Code to find the k largest elements in sorted order}
+\end{algorithm}
+
+\subsection*{Time Complexity Analysis}
+The time complexity of building a Max Heap out of an array with $n$
+elements is $O(n)$. The time complexity of extractMax which also
+restores the heap property is $O(\log{n})$ and is executed $k$ times so
+overall Time Copmplexity is $O(n+k\log{n})$.
+
+\section*{Question 3}
+Prove that the number of keys stored in a 2-3 tree of height h
+is $\Omega{(2^{h})}$ and $O(3^{h})$.
+
+\subsection*{Proof that the number of keys is $\Omega{(2^h)}$}
+
+\begin{proof} To prove this statement we will use Induction.
+\begin{quote}
+\textbf{Basis Step:}
+Let the height of the 2-3 tree $h$ = 0, then number of keys stored $k$ = $2^{0}$ = 1. 1 $\geq$ 1
+so 1 = $\Omega{(2^0)}$ meaning that our Base Case holds. \\
+
+\textbf{Inductive Hypothesis:}
+$k$ = $\Omega{(2^h)}$, so our number of keys $k$ $\geq$ $2^h$. \\
+
+\textbf{Inductive Step:}
+Assume that our Hypothesis holds up to $h$. Prove for $h$ + 1. Let $l$ be the number
+of keys in a 2-3 tree oh height $h$ + 1. A 2-3 tree of height
+$h$ + 1 is a 2-3 tree of height $h$ where at least one of the leaf nodes has an additional 
+subtree of height 1 as a child which by definition of a 2-3 tree stores at least 2 keys. By the Inductive
+Hypothesis $l$ $\geq$ 2 $\cdot$ $k$ $\geq$ 2 $\cdot$ $2^h$ $\geq$ $2^{h+1}$.
+
+\end{quote}
+\end{proof}
+
+\subsection*{Proof that the number of keys is $O{(3^h)}$}
+
+\begin{proof} To prove this statement we will use Induction.
+\begin{quote}
+\textbf{Basis Step:}
+Let the height of the 2-3 tree $h$ = 0, then number of keys stored $k$ = $3^{0}$ = 1. 1 $\leq$ 1
+so 1 = $O{(3^0)}$ meaning that our Base Case holds. \\
+
+\textbf{Inductive Hypothesis:}
+$k$ = $O{(3^h)}$, so our number of keys $k$ $\leq$ $3^h$. \\
+
+\textbf{Inductive Step:}
+Assume that our Hypothesis holds up to $h$. Prove for $h$ + 1. Let $l$ be the number
+of keys in a 2-3 tree oh height $h$ + 1. A 2-3 tree of height
+$h$ + 1 is a 2-3 tree of height $h$ where at most all of the leaf nodes have an additional 
+subtree of height 1 as a child which by definition of a 2-3 tree stores at most 3 keys. By the Inductive
+Hypothesis $l$ $\leq$ 3 $\cdot$ $k$ $\leq$ 3 $\cdot$ $3^h$ $\leq$ $3^{h+1}$.
+
+\end{quote}
+\end{proof}
+
+\section*{Question 4}
+Suppose you are given two 2-3 trees T1, T2 and a value x such
+that all keys in T1 are less than x, and all keys in T2 are greater than x.
+Give an algorithm that constructs a single new T
+0 that has the union of keys in T1, T2, and x. Give a running time analysis.
+\newpage
+
+\subsection*{Pseudo Code}
+\begin{algorithm}
+\begin{algorithmic}
+\STATE{$T0 \gets$  $new$ 2-3 Tree}
+\IF{$T1.height$ == $T2.height$}
+	\STATE{$T0.root \gets x$}
+	\STATE{$T0.left \gets T1$}
+	\STATE{$T0.right \gets T2$}
+\ELSIF{$T1.height$ $>$ $T2.height$}
+	\STATE{$T2$.\textbf{insert($x$)}}
+	\STATE{$currentNode \gets T1.root$}
+	\FOR{$i \gets 0$, $i$ $<$ $T1.height$ - $T2.height$, $i$++}
+		\STATE{$currentNode \gets currentNode.right$}
+	\ENDFOR
+	\STATE{$currentNode.right \gets T2$}
+	\IF{$currenNode.right.numOfKeys$ $>$ 3}
+		\STATE{\textbf{fixOverall($currentNode$)}}
+	\ENDIF
+	\STATE{$T0.root \gets T1.root$}
+\ELSIF{$T1.height$ $<$ $T2.height$}
+	\STATE{$T1$.\textbf{insert($x$)}}
+	\STATE{$currentNode \gets T2.root$}
+	\FOR{$i \gets 0$, $i$ $<$ $T2.height$ - $T2.height$, $i$++}
+		\STATE{$currentNode \gets currentNode.right$}
+	\ENDFOR
+	\STATE{$currentNode.right \gets T1$}
+	\IF{$currenNode.right.numOfKeys$ $>$ 3}
+		\STATE{\textbf{fixOverall($currentNode$)}}
+	\ENDIF
+	\STATE{$T0.root \gets T2.root$}	
+\ENDIF
+
+\end{algorithmic}
+\caption{Pseudo Code for merging 2-3 Trees}
+\end{algorithm}
+
+\subsection*{Runtime Analysis}
+This alorithm constructs a single new 2-3 Tree
+$T0$ that has the union of keys in $T1$, $T2$, and $x$
+in time $O{(\log n)}$. The algorithm needs to consider three cases:
+First, $T1$ and $T2$ are of equal height. Here, the algorithm
+will construct $T0$ in constant time $O(1)$ by making $x$ the root Node 
+and storing the subtree $T1$ which contains all keys smaller
+than $x$ as the left child of the root, and storing the subtree $T2$ 
+which contains all keys greaterthan $x$ as the right child of the root.
+The next 2 cases are that either $T1$ or $T2$ are bigger. If this is the case,
+the algorithm will find the $h1-h2$th largest node and insert $T2$ as a subtree
+of $T1$ if the height of $T1$ is bigger or find the $h2-h1$th smallest node and 
+insert $T1$ as a subtree of $T2$. If necessary, the algorithm will then restore 
+the 2-3 Tree property, Giving us a total runtime of $O(\log n)$. 
+
+\section*{Question 5}
+Consider a binary search tree where keys are positive integers.
+Augment the tree to answer Range queries of the form: “how many elements
+have key in the range [a, b]”? Thus, such a query is called by the
+function Range(a, b).
+Provide pseudocode for Insert, Delete, and Range queries. Provide a running
+time analysis for all these queries, in terms on n (the number of
+nodes in the tree) and D (the maximum depth). (Hint: you might want
+to maintain subtree sizes at the nodes.)\\
+
+\subsection*{BST Insertion}
+\begin{algorithm}
+\begin{algorithmic}
+\IF{$node$ == $null$}
+	\STATE{$node.data \gets k$}
+	\STATE{$node.left \gets null$}
+	\STATE{$node.right \gets null$}
+	\STATE{$node.treeSize \gets 0$}
+	\STATE{\textbf{return}}
+\ELSIF{$node$ $!=$ $null$}
+	\IF{$k$ $<$ $node.data$}
+		\STATE{$node.treeSize++$}
+		\STATE{$node.left \gets \textbf{insert$(node.left,k)$}$}
+	\ELSIF{$k$ $>$ $node.data$}
+		\STATE{$node.treeSize++$}
+		\STATE{$node.right \gets \textbf{insert$(node.right,k)$}$}
+	\ENDIF
+\ENDIF
+\STATE{return}
+
+\end{algorithmic}
+\caption{Pseudo Code for inserting a key $k$ in a BST $node$}
+\end{algorithm}
+
+\textbf{Time Complexity Analysis:} \\
+The insert algorthim runs in worst case $O(n)$ and $O(D)$. If the tree
+becomes very unbalanced it effectively functions as a linked list and the time 
+compelxity of inserting at the last node in a Linked List is $O(n)$.
+
+\newpage
+
+\subsection*{BST Deletion}
+\begin{algorithm}
+\begin{algorithmic}
+\IF{$node$ $!=$ $null$}
+	\IF{$k$ $<$ $node.data$}
+		\STATE{$node.treeSize--$}
+		\STATE{$node.left \gets \textbf{delete$(node.left, k)$}$}
+	\ELSIF{$k$ $>$ $node.data$}
+		\STATE{$node.treeSize--$}
+		\STATE{$node.right \gets \textbf{delete$(node.right, k)$}$}
+	\ELSE
+		\IF{$node.right$ $==$ $null$ and $node.left$ $==$ $null$}
+			\STATE{$node \gets null$}
+		\ELSIF{$node.right$ $==$ $null$ and $node.left$ $!=$ $null$}
+			\STATE{$node \gets node.left$}
+		\ELSIF{$node.right$ $!=$ $null$ and $node.left$ $==$ $null$}
+			\STATE{$node \gets node.right$}
+		\ELSE
+			\STATE{$smallestRightChild \gets node.right.data$}
+			\STATE{$tempNode \gets node.right$}
+			\WHILE{$tempNode.left$ $!=$ $null$}
+				\STATE{$smallestRightChild \gets tempNode.left.data$}
+				\STATE{$tempNode \gets tempNode.left$}
+			\ENDWHILE
+			\STATE{$node.data \gets smallestRightChild$}
+			\STATE{$node.right \gets \textbf{delete$(node.right, node.data)$}$}
+		\ENDIF{}
+	\ENDIF
+\ENDIF
+\end{algorithmic}
+\caption{Pseudo Code for deleting a node with key $k$ in a BST $node$}
+\end{algorithm}
+ 
+\textbf{Time Analysis:} \\
+The delete algorthim runs in worst case $O(n)$ and $O(D)$. If the tree
+becomes very unbalanced it effectively functions as a linked list and the time 
+compelxity of deleting the last node in a Linked List is $O(n)$.
+
+
+\subsection*{BST Range Query}
+\begin{algorithm}
+\begin{algorithmic}
+\IF{$node$ == $null$}
+	\STATE{\textbf{return} 0}
+\ELSIF{$node.data$ $<$ $a$}
+	\STATE{\textbf{Range$(node.right,a,b)$}}
+\ELSIF{$node.data$ $>$ $b$}
+	\STATE{\textbf{Range$(node.left,a,b)$}}
+\ELSE
+	\STATE{$leftNode \gets node.left$}
+	\STATE{$leftCount \gets 0$}
+	\WHILE{$leftNode.left$ $!=$ $null$ and $leftNode.data$ $>$ $a$}
+		\IF{$leftNode.right$ $!=$ $null$}
+			\STATE{$leftCount $ += $ leftNode.right.treeSize$}
+		\ENDIF
+		\STATE{$leftCount++$}
+		\STATE{$leftNode \gets leftNode.left$}
+	\ENDWHILE
+	\IF{$leftNode.left$ $!=$ $null$ and $leftNode.left.right.data$ $!=$ $null$ and $leftNode.left.right.data$ $>$ $a$}
+		\STATE{$leftCount$ += \textbf{Range$(leftNode.left.right,a,b)$}}
+	\ENDIF
+	\STATE{$rightNode \gets node.right$}
+	\STATE{$rightCount \gets 0$}
+	\WHILE{$rightNode.right.$ $!=$ $null$ and $rightNode.data$ $<$ $b$}
+		\IF{$rightNode.left$ $!=$ $null$}
+			\STATE{$rightCount $ += $ rightNode.left.treeSize$}
+		\ENDIF
+		\STATE{$rightCount++$}
+		\STATE{$rightNode \gets rightNode.right$}
+	\ENDWHILE
+	\IF{$rightNode.right$ $!=$ $null$ and $rightNode.righ.left.data$ $!=$ $null$ and $righttNode.right.left.data$ $<$ $b$}
+		\STATE{$rightCount$ += \textbf{Range$(rightNode.right.left,a,b)$}}
+	\ENDIF
+	\STATE{\textbf{return} 1 + $rightCount$ + $leftCount$}
+\ENDIF
+\end{algorithmic}
+\caption{Pseudo Code for num of keys in Range [a,b] of a BST $node$}
+\end{algorithm}
+
+\textbf{Time Complexity Analysis:} \\
+The Range Query Algorithm runs in $O(n)$ and $O(D)$. Such a runtime occurs
+in the case that the tree is a linked list 
+where the key at the root is equal to $a$ and the key at the rightmost child of the tree
+is equal to $b$.  
+
+\end{document}

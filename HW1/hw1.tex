@@ -1,0 +1,100 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsthm,amssymb}
+\title{CMPS 101 Homework 1}
+\author{Dominik Schmidt}
+\date{Ocotber 3, 2018}
+\begin{document}
+\maketitle
+
+\section*{Question 1}
+ A common algorithm for sorting is Bubble-Sort. Consider an input array A, with n elements. You repeat the following process n times: for every i from n - 1, if A[i] and A[i + 1] are out of order, you swap them.\\
+
+\begin{algorithm}
+\begin{algorithmic}
+\FORALL{$i$ in $A$}
+	\FOR{$j \gets 0,\, n - i - 1$}
+		\IF{$A[j]$ $>$ $A[j + 1]$}
+			\STATE swap $A[j]$ and $A[j + 1]$
+		\ENDIF
+	\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\caption{Pseudo Code for slightly optimized Bubble Sort}
+\end{algorithm}
+
+\textbf{Time Complexity analysis for Bubble Sort:}\\
+Consider the worst case scenario where A is sorted in descending Order. In this case the algorithm will swap $n-i$ elements for all $n$ iterations. Hence, the upper bound is $O(n^2)$. Next consider the best case scenario where the array A is completely sorted. In this case primitive unoptimized Bubble Sort will still compare elements $n- i$ times for all $n$ iterations, so the algorithm will run at least $c \cdot (n - 1) \cdot (n)$ comparison operations. Hence, the lower bound is $\Omega(n^2)$. In any
+case, Bubble sort executes $c \cdot (n - 1) \cdot (n)$ operations. $$\lim_{n\to\infty} \frac{c\cdot n \cdot(n - i)}{n^2} = \frac{n^2}{n^2}= 1$$
+Since $1 \in $ $\mathbb{N}$ and $1$ $\neq$ 0, and $\Omega(f(n))$ = $O(f(n))$, Bubble Sort runs in $\Theta{({n^2)}}$ because $f(n)$ = $\Theta{(g(n))}$ if $\lim_{n\to\infty} \frac{f(n)}{g(n)}$ = $ \in \mathbb{N} \neq$ 0,  $\Omega(f(n))$ = $O(f(n))$.\\
+\\\textbf{Proof of correctness:}
+\begin{quote}
+$\forall$ $0$ $\leq$ $k$ $\leq$ $n - 1$ : After the outer loop runs k times, the elements from indices $A[n - k - 1]$ up to $A[n - 1]$ are sorted and the $k$ largest elements in the array. \\\\
+\textbf{Proof by Induction on k.}\\\\
+\textbf{Base Case:} $k = 0$ is vacuosly true since $A[1, 0]$ contains no real elements. \\
+\textbf{Induction:} Assume the invariant holds for all elements up to $k$. Prove for $k + 1$. By the Inductive Hypothesis the $k$ largest elements of the array $A$ are sorted up from the index $A[n - k - 1]$, the inner loop at iteration $j = k$ inserts the largest element in $A[0]$ to $A[k - 1]$ at index $A[k]$. Thus the invariant holds for $k + 1$.
+\end{quote}
+
+\section*{Question 2}
+ Use induction to prove the following statement:
+The number of subsets of $\{1,2,...,n\}$ having an odd number of elements is $2^{n-1}$. \\
+\begin{proof} To prove this statement we will use Induction.
+  \begin{quote}
+   \textbf{Basis Step:}
+
+       Let $f(n)$ be the hypothesis that the number of subsets of $\{1,2,\dots,n\}$ having an odd number of elements 
+       is $2^{n-1}$, then for $n=1$
+       $f(n) = 2^{1-1} = 2^0 = 1$, subsets of $\{1\}$ are $\emptyset$ and $\{1\}$, out of which exactly one has an odd number of elements. \\
+       
+   \textbf{Inductive Hypothesis:}
+       $f(n+1) \rightarrow$ the number of subsets of $\{1,2,\dots,n,n+1\}$ having an odd number of elements is $2^{(n-1)+1}$\\
+
+   \textbf{Inductive Step:}
+       By the inductive hypothesis the number of subsets having an odd number of elements of the set \\ $\{1,2,\dots,n,n+1\} = 2^{n-1} + x$, where $x$ is the
+       number subsets with an odd number of elements that are unique to $\{1,2,\dots,n,n+1\}$. By the definition of the cardinality of the powerset, the number
+       of subsets of $\{1,2,\dots,n\}$ is $2^n$. There exist exactly 2 subsets of  $\{1,2,\dots,n,n+1\}$
+       for every $\{1,2,\dots,n\}$, half of which have an odd number of elements and half of which have an even number of elements. Let $A$ denote the power set of
+       $\{1,2,\dots,n\}$ and let $B$ denote the powerset of $\{1,2,\dots,n,n+1\}$, then $|B - A|$ = $2^n$.
+       Therefore $x = \frac{1}{2} \cdot 2^n = 2^{n-1}$.\\ $f(n + 1) \rightarrow 2^{n-1} + 2^{n-1} = 2\cdot 2^{n-1} =  2^{(n-1)+1}$
+       
+  \end{quote}
+\end{proof}
+
+\section*{Question 3}
+ Let $f(n) = a_{0} + a_{1} n + a_{2} n^{2} +
+  \ldots + a_{k} n^{k}$ be a degree-$k$ polynomial, where every $a_{i} >
+  0$. Show that $f(n) \in \Theta(n^{k})$. 
+  Furthermore, show that $f(n) \notin O(n^{k'})$, for all $k' < k$. \\
+$$\lim_{k\to\infty} \frac{f(n)}{n^k} = \lim_{k\to\infty} \frac{a_{0} + a_{1} n + a_{2} n^{2} +
+  \ldots + a_{k} n^{k}}{n^k} = 1$$ Since $1 \in $ $\mathbb{N}$ and $1$ $\neq$ 0, $f(n)$ $\in$ $\Theta{(n^k)}$ because Big Theta is defined as  \\$f(n)$ = $\Theta{(g(n))}$ if $\lim_{n\to\infty} \frac{f(n)}{g(n)}$ = $ \in \mathbb{N} \neq$ 0\\
+$$ k > {k'}, \lim_{k, {k'}\to\infty} \frac{f(n)}{n^{k'}} = \lim_{k, {k'}\to\infty} \frac{a_{0} + a_{1} n + a_{2} n^{2} +
+  \ldots + a_{k} n^{k}}{n^{k'}} = \infty$$ Since $\infty$ $\nless$ $\infty$, by the Big O Definition $f{(n)}$ $\notin$ $O{(n^{k'})}$.
+
+
+\section*{Question 4}
+ Prove that $\log_2n = O(n^{1/10})$, but $\log_2n$ is not in $\Omega(n^{1/10})$. Is $\log_2n = \Theta(n^{1/10})$?
+Why or why not?\\\\
+By L'Hopital's Rule$$ \lim_{n\to\infty} \frac{\log_2n}{n^{\frac{1}{10}}} = $$
+$$\lim_{n\to\infty} \frac{10}{{\ln(2)}n^{\frac{1}{10}}} =  \frac{\lim_{n\to\infty}10}{{\lim_{n\to\infty}\ln(2)}n^{\frac{1}{10}}} = \frac{10}{\infty} = 0$$
+By the $Big$ $O$ defintion, a function$f(n)$ = $O(g(n))$ if $\lim_{n\to\infty} \frac{f(n)}{g(n)}$ $<$ $\infty$, $\log_2n = O(n^{1/10})$ since 0 $<$ $\infty$.
+ By the $Big$ $Omega$ defintion, a function$f(n)$ = $\Omega(g(n))$ if $\lim_{n\to\infty} \frac{f(n)}{g(n)}$ $>$ $0$, $\log_2n$ $\notin$ $\Omega(n^{1/10})$ since 0 
+$\nless$ 0.  Therefore, $\log_2n \neq \Theta(n^{1/10})$ because by the $Big$ $Theta$ definition $f(n)$ = $\Theta{(g(n))}$ if $\lim_{n\to\infty} \frac{f(n)}{g(n)}$ = $ \in \mathbb{N} \neq$ 0 and $O(f(n))$ = $\Omega(f(n))$.
+In  this case neither of these conditions are satisfied.
+
+\section*{Question 5}
+Suppose the input array $A$ is in sorted order,
+\emph{except} for $k$ elements. In other words, there are $n-k$ elements of $A$ that
+are already in sorted order, and the remaining $k$ elements are out of order. Prove
+that Insertion-Sort on $A$ runs in $O(nk)$ time. \\\\
+\textbf{Proof:} Consider the case where the Array $A$ is sorted up to index $A[n - k]$ and elements from index $A[n - k + 1]$ to $A[n - 1]$ are not sorted.
+In this case Insertion Sort will only loop over the first $n - k$ elements in the array because they are already sorted. Hence, Insertion sort runs in a linear $O{(n - k)}$ on the first $n - k$ elements.
+ Next consider the remaining $k$ elements. We know that the first $n - k$ elements are sorted, meaning that the maximum number of indices in the remaining Array
+ that $\exists j$ $\in$ $A[n - k,\dots,n - 1]$  is away from it's sorted index is $k$. Therefore Insertion sort would have to swap at most $k$ elements to sort elements $A[n - k - 1]$ through $A[n - 1]$. To sort the remaining $k$ elements the algorithm needs $k$ $O(n)$  operations.\\\\   Next consider the scenario where the sorted $n - k$ elements are not in consecutive order and rather the array looks something like $\{n,\dots,8,6,5,3,\dots,n + 1\}$ in this case Insertion Sort may have
+to swap as many $n$ elements and compare as many as $n\cdot k$ elements, leaving us with a combined runtime $O(nk)$.
+
+\section*{Acknowledgements}
+For parts of Question 5 I consulted the TA as well as the section on Insertion Sort in $Introduction$ $to$ $Algorithms,$ $3rd$ $Edition$.
+
+\end{document}
